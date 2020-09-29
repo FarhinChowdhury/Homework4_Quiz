@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
+    <title>Coding Quiz</title>
+</head>
+<style>
+    center{
+        padding-top: 250px;
+    }
+    h1{
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .hide{
+        display: none;
+    }
+    .score-page{
+        margin-top: -100px;
+    }
+    .btn-warning{
+        padding: 15px 30px;
+    }
+    #question-container{
+        margin-top:-100px;
+    }
+</style>
+
+
+<body>
+    <nav class="navbar navbar bg" style="background-color: rgb(248, 213, 11)">
+        <div class= "card">
+            <h1 id = "score" style="float:left">Score: </h1>
+        </div>
+        <div class="card">
+            <h1 id="time" style="float:right">Time:</h1>
+        </div>
+      </nav>
+    
+    <div class= "container">
+        <center>
+            <div id = "starting-page" >
+                <h1>Coding Quiz Challange</h1>
+                <p>Once the 'Start' button is pressed the questions will appear and the timer will start. If the answer is wrong 10 seconds will be deducted from the time if the answer is correct 1 point will be added to your score.</p>
+                <button id = "start" type="button" class="btn btn-primary btn-lg">Start</button>
+            </div>
+            <br>
+            <div id="question-container" class="hide">
+                <h2 id="question">Question 1</h2>
+                <br>
+                <div id="answer-bottons" class="btn-grid">
+                    <button id ="option1" type="button" class="btn btn-warning option">Option1</button>
+                    <br><br>
+                    <button id ="option2" type="button" class="btn btn-warning option">Option2</button>
+                    <br><br>
+                    <button id ="option3" type="button" class="btn btn-warning option">Option3</button>
+                    <br><br>
+                    <button id ="option4" type="button" class="btn btn-warning option">Option4</button>
+                </div>
+                <br>
+            </div>
+            <div class= 'score-page hide'>
+                    <h1>ScoreBoard:</h1>
+                    <hr>
+                    <div class="row">
+                        <div class = "col-lg-6" style ="float:left;">
+                            <h2 id= "user-name" style ="float: left">Name:</h2>
+                        </div>
+                        <div class = "col-lg-6">
+                            <h2 id = 'score-final'style = "float:left">Score:</h2>
+                        </div>
+                    </div>
+                        
+            </div>               
+
+        </center>
+    </div>
+</body>
+</html>
+
+
+<script>
+    var score = 0
+    var correctAnswers
+    var timer = 60
+    var questionCounter = 0
+    //all the questions, options and correct answers are set in this object that has been assigned a variable called "questions":
+    var questions = [
+        {
+            question: "What type of tag is used to write JavaScript code>",
+            answers: ["<div>", "<script>", "<style>", "<html>"],
+            correct:["<script>"]
+        },{
+            question: "How would you write 'Hello World' in an alert box?",
+            answers: ["alert('Hello World')", "prompt('Hello World')", "msg('Hello World')", "confirm('Hello World')"],
+            correct:["alert('Hello World')"]
+        },{
+            question: "How would you write an IF statement for 'i' is not equal to 5?",
+            answers: ["if i =! 5 then", "if i =/ 5", "if(i != 5)", "i =/5"],
+            correct:["if(i != 5)"]
+
+        },{
+            question: "Which operator is used to assign a value to a variable?",
+            answers: ["*", "^", "-", "="],
+            correct:["="]
+
+        },{
+            question: "What will the following code return: Boolean(10>9)?",
+            answers: ["false", "NaN", "true", "unidentified"],
+            correct:["true"]
+
+        }
+    ]
+
+    // shows the question after the starting page and also helps populate the question and answer buttons.
+    function showQuestion(){
+        const options = questions[questionCounter].answers
+         correctAnswers = questions[questionCounter].correct
+        
+        //Question:
+            document.querySelector('#question').textContent = questions[questionCounter].question
+        //Options:
+            document.querySelector('#option1').textContent= options[0]
+            document.querySelector('#option2').textContent= options[1]
+            document.querySelector('#option3').textContent= options[2]
+            document.querySelector('#option4').textContent= options[3]       
+    }
+
+    // This function reveals the next question once one is answered also keeps track of time and score if the answer is right or wrong.
+    function nextQuestion(event){
+        if(event.target.textContent != correctAnswers){
+            timer = timer -10
+
+        }else{
+            score = score+1
+            document.querySelector('#score').textContent = `Score: ${score}`
+            
+        }
+        
+        questionCounter++
+        showQuestion()
+        
+    }
+
+    // Shows the starting page of the quiz and once the Start Button is pressed the timer starts and shows the questions.
+    function startingQuiz(){
+       
+        document.querySelector('#starting-page').classList.add('hide')
+        document.querySelector('#question-container').classList.remove('hide')
+ 
+        decreaseTimer()
+        showQuestion()
+    }
+
+
+    // Countdown timer: 
+    //  - if the timer ends or all the questions are answered the timer stops and the Score-Page is called.
+    function decreaseTimer(){
+        timer--
+        document.querySelector('#time').textContent = `Timer: ${timer}`
+        if( timer>0 ){
+         var countdown = setTimeout( decreaseTimer, 1000 )
+        } if(timer==0 || questionCounter==questions.length){
+            scorePage()
+            clearTimeout(countdown)
+            
+        }
+    }
+
+
+    // Function reveals the last score board at the end of the quiz and carries values such as final score and user-name.
+    function scorePage(){
+        //Score page:    
+        document.querySelector('#question-container').classList.add('hide')
+        document.querySelector('.score-page').classList.remove('hide')
+        var userName= prompt("Game Over! Please enter is your name?")
+
+        //Score vallues:
+        document.querySelector("#user-name").textContent = `Name:  ${userName}`
+        document.querySelector("#score-final").textContent = `Score:  ${score}`
+        var previousResults = [localStorage.setItem(userName, score)]
+    }
+
+    //Add EvenListeners:
+    document.querySelector("#start").addEventListener('click', startingQuiz)
+    document.querySelector('#answer-bottons').addEventListener('click', nextQuestion)
+
+</script>
