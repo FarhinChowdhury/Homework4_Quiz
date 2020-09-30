@@ -24,7 +24,7 @@ My Process:
 
 2. I then went on creating my question container which included the same nav bar but showed the question and options which again were acquired from bootstraps, four button options for each quesion.
 
-3. Finally for my html I had to create a score board which was simply a in a div container <h1> with the heading Score board and and the place for where the name and the score of the user will be placed.
+3. Finally for my html I had to create a score board which was simply a in a div container with the heading Score board and and the place for where the name and the score of the user will be placed.
 
 4. for my css I kept it quite clean and simple wih the navbar being a yellow collor and the background white. with the option button being yellow. I made sure that the questions container and the score board page were both under the "hide" class. this will allow the css .hide{ display:none} to hide these contents and will appear when necessary as directed by the js code
 
